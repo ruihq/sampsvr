@@ -1,4 +1,4 @@
-# SA:MP Server Workflow with Ngrok
+# SA-MP Server Workflow with Ngrok
 
 This is a GitHub workflow that starts an SA:MP server and tunnels it using Ngrok. It then pushes any changes made during the session to the repository after the server has been running for 2 hours.
 
