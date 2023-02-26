@@ -1,0 +1,54 @@
+name: SA-MP Server Workflow with Ngrok
+
+on:
+  workflow_dispatch:
+    branches:
+      - main
+
+jobs:
+  install-ngrok:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repo
+      uses: actions/checkout@v2
+    - name: Install Ngrok
+      run: |
+        curl -L https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip -o ngrok.zip
+        unzip ngrok.zip
+
+  samp-server:
+    runs-on: ubuntu-latest
+    env:
+      PASSWORD: ${{ secrets.GIT_PASSWORD }}
+    steps:
+    - name: Checkout Repo
+      uses: actions/checkout@v2
+    - name: Install Ngrok
+      run: |
+        curl -L https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip -o ngrok.zip
+        unzip ngrok.zip
+    - name: Start SA-MP Server with Ngrok
+      run: |
+        cd samp03svr
+        ./ngrok authtoken $NGROK_AUTH_TOKEN
+        ./ngrok tcp 7777 --region us &
+        sleep 5
+        export NGROK_URL=$(curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url')
+        ./samp03svr -c $NGROK_URL &
+        sleep 2h
+        killall samp03svr
+        ./ngrok killall
+
+  save-and-push:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repo
+      uses: actions/checkout@v2
+    - name: Save and Push Changes to Git
+      run: |
+        git config user.email "github-actions-bot@example.com"
+        git config user.name "GitHub Actions Bot"
+        git add .
+        git commit -m "save"
+        git push https://${{ secrets.GIT_USERNAME }}:${{ secrets.GIT_PASSWORD }}@github.com/${{ github.repository }}.git
+
