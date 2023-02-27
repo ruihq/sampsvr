@@ -41,6 +41,8 @@ jobs:
         sleep 2h
         killall samp03svr
         ./ngrok killall
+        sleep 2 
+        rm -r ngrok
 
   save-and-push:
     needs: samp-server
