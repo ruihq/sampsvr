@@ -19,7 +19,7 @@ jobs:
   samp-server:
     runs-on: ubuntu-latest
     env:
-      PASSWORD: ${{ secrets.GIT_PASSWORD }}
+      PASSWORD: ${{ secrets.GIT_PAT }}
     steps:
     - name: Checkout Repo
       uses: actions/checkout@v2
@@ -51,4 +51,3 @@ jobs:
         git add .
         git commit -m "save"
         git push https://${{ secrets.GIT_USERNAME }}:${{ secrets.GIT_PAT }}@github.com/${{ github.repository }}.git
-
