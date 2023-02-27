@@ -46,9 +46,9 @@ jobs:
       uses: actions/checkout@v2
     - name: Save and Push Changes to Git
       run: |
-        git config user.email "github-actions-bot@example.com"
-        git config user.name "GitHub Actions Bot"
+        git config user.email "github@ghbot.com"
+        git config user.name "Auto save Bot"
         git add .
         git commit -m "save"
-        git push https://${{ secrets.GIT_USERNAME }}:${{ secrets.GIT_PASSWORD }}@github.com/${{ github.repository }}.git
+        git push https://${{ secrets.GIT_USERNAME }}:${{ secrets.GIT_PAT }}@github.com/${{ github.repository }}.git
 
