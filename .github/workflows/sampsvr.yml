@@ -17,6 +17,7 @@ jobs:
         unzip ngrok.zip
 
   samp-server:
+    needs: install-ngrok
     runs-on: ubuntu-latest
     env:
       PASSWORD: ${{ secrets.GIT_PAT }}
@@ -29,7 +30,8 @@ jobs:
         unzip ngrok.zip
     - name: Start SA-MP Server with Ngrok
       run: |
-        cd samp03svr
+        cd samp03
+        chmod +x samp03svr
         ./ngrok authtoken $NGROK_AUTH_TOKEN
         ./ngrok tcp 7777 --region us &
         sleep 5
@@ -40,14 +42,15 @@ jobs:
         ./ngrok killall
 
   save-and-push:
+    needs: samp-server
     runs-on: ubuntu-latest
     steps:
     - name: Checkout Repo
       uses: actions/checkout@v2
     - name: Save and Push Changes to Git
       run: |
-        git config user.email "github@ghbot.com"
-        git config user.name "Auto save Bot"
+        git config user.email "ruihq.gh@gmail.com" /* Add your Gmail here! */
+        git config user.name "bot"
         git add .
         git commit -m "save"
         git push https://${{ secrets.GIT_USERNAME }}:${{ secrets.GIT_PAT }}@github.com/${{ github.repository }}.git
