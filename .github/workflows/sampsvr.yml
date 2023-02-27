@@ -28,6 +28,7 @@ jobs:
       run: |
         curl -L https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip -o ngrok.zip
         unzip ngrok.zip
+        mv ngrok samp03
     - name: Start SA-MP Server with Ngrok
       run: |
         cd samp03
