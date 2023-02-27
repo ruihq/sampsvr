@@ -21,6 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PASSWORD: ${{ secrets.GIT_PAT }}
+      NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
     steps:
     - name: Checkout Repo
       uses: actions/checkout@v2
@@ -31,6 +32,7 @@ jobs:
         mv ngrok samp03
     - name: Start SA-MP Server with Ngrok
       run: |
+        echo "::set-env name=NGROK_AUTH_TOKEN::${{ secrets.NGROK_AUTH_TOKEN }}"
         cd samp03
         chmod +x samp03svr
         ./ngrok authtoken $NGROK_AUTH_TOKEN
